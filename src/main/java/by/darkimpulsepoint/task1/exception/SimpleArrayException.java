@@ -1,0 +1,18 @@
+package by.darkimpulsepoint.task1.exception;
+
+public class SimpleArrayException extends RuntimeException {
+    public SimpleArrayException() {
+    }
+
+    public SimpleArrayException(String message) {
+        super(message);
+    }
+
+    public SimpleArrayException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public SimpleArrayException(Throwable cause) {
+        super(cause);
+    }
+}
