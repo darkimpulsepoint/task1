@@ -60,7 +60,6 @@ public class Main {
 
         } catch (ArrayReaderException e) {
             logger.error("Failed to read the data file.", e);
-            System.err.println("Error: " + e.getMessage());
         }
 
         logger.info("Application finished.");
