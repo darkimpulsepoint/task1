@@ -2,8 +2,11 @@ package by.darkimpulsepoint.task1.service;
 
 import by.darkimpulsepoint.task1.entity.SimpleArray;
 
-public interface NumericArrayService<R extends SimpleArray<T>, T extends Number> extends ArrayService<R, T> {
-    T findSum(R array);
+import java.util.Optional;
 
-    Double findAverage(R array);
+public interface NumericArrayService<T extends Number> extends ArrayService<SimpleArray<T>, T> {
+
+    Optional<T> findSum(SimpleArray<T> array);
+
+    Optional<Double> findAverage(SimpleArray<T> array);
 }

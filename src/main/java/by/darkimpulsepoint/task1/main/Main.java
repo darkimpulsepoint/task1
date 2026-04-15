@@ -1,67 +1,116 @@
 package by.darkimpulsepoint.task1.main;
 
-import by.darkimpulsepoint.task1.entity.IntegerArray;
-import by.darkimpulsepoint.task1.exception.ArrayReaderException;
-import by.darkimpulsepoint.task1.factory.AbstractArrayFactory;
-import by.darkimpulsepoint.task1.factory.impl.IntegerArrayFactory;
-import by.darkimpulsepoint.task1.reader.ArrayReader;
-import by.darkimpulsepoint.task1.reader.impl.ArrayReaderImpl;
+import by.darkimpulsepoint.task1.comparator.impl.FirstElementComparator;
+import by.darkimpulsepoint.task1.comparator.impl.SumComparator;
+import by.darkimpulsepoint.task1.entity.SimpleArray;
+import by.darkimpulsepoint.task1.entity.SimpleArrayImpl;
+import by.darkimpulsepoint.task1.exception.SimpleArrayException;
+import by.darkimpulsepoint.task1.factory.impl.NumericArrayFactory;
+import by.darkimpulsepoint.task1.observer.impl.SimpleArrayObserverImpl;
+import by.darkimpulsepoint.task1.pool.Warehouse;
 import by.darkimpulsepoint.task1.service.impl.IntegerArrayService;
 import by.darkimpulsepoint.task1.validator.impl.IntegersLineValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class Main {
-    private static final Logger logger = LogManager.getLogger();
-    private static final String FILE_PATH = "data/numbers.txt";
+
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
-        logger.info("Application starting...");
 
-        ArrayReader reader = new ArrayReaderImpl();
+        logger.info("=== SimpleArray Implementation Demo Started ===");
+
+        logger.info("1. Creating arrays from strings using NumericArrayFactory");
+
         IntegersLineValidator validator = new IntegersLineValidator();
-        AbstractArrayFactory<IntegerArray> factory = new IntegerArrayFactory(validator);
-        IntegerArrayService service = new IntegerArrayService();
+        NumericArrayFactory factory = new NumericArrayFactory(validator);
 
-        try {
-            List<String> lines = reader.read(FILE_PATH);
-            logger.info("Successfully read {} lines from file {}", lines.size(), FILE_PATH);
+        String[] inputLines = {
+                "10 20 30 40",
+                "5 15 -25 8",
+                "100",
+                "1 2 3 4 5 6 7",
+                "   "
+        };
 
-            int lineCounter = 1;
-            for (String line : lines) {
-                System.out.println("----------------------------------------");
-                System.out.printf("Processing line #%d: \"%s\"\n", lineCounter++, line);
+        List<SimpleArray<Integer>> arrays = new ArrayList<>();
 
-                Optional<IntegerArray> arrayOptional = factory.createArray(line);
-
-                if (arrayOptional.isPresent()) {
-                    IntegerArray array = arrayOptional.get();
-                    System.out.println("Successfully created array: " + array);
-
-                    service.findMinElement(array)
-                            .ifPresent(min -> System.out.println("Min element: " + min));
-
-                    service.findMaxElement(array)
-                            .ifPresent(max -> System.out.println("Max element: " + max));
-
-                    System.out.println("Sum of elements: " + service.findSum(array));
-                    System.out.printf("Average of elements: %.2f\n", service.findAverage(array));
-
-                    service.bubbleSort(array);
-                    System.out.println("Sorted array: " + array);
-
-                } else {
-                    System.out.println("Result: Could not create array. The line is invalid or empty.");
-                }
+        for (String line : inputLines) {
+            Optional<SimpleArray<Integer>> optionalArray = factory.createArray(line);
+            if (optionalArray.isPresent()) {
+                arrays.add(optionalArray.get());
+                logger.info("Successfully created array: {}", optionalArray.get());
+            } else {
+                logger.warn("Failed to create array from line: '{}'", line);
             }
-            System.out.println("----------------------------------------");
-
-        } catch (ArrayReaderException e) {
-            logger.error("Failed to read the data file.", e);
         }
 
-        logger.info("Application finished.");
+        logger.info("Total successfully created arrays: {}", arrays.size());
+
+        if (!arrays.isEmpty()) {
+            SimpleArray<Integer> array = arrays.get(0);
+            logger.info("2. Performing basic operations on array: {}", array);
+
+            logger.info("Array size: {}", array.size());
+
+            try {
+                logger.info("Element at index 2: {}", array.get(2));
+
+                array.replace(1, 999);
+                logger.info("After replacing index 1 with 999: {}", array);
+
+            } catch (SimpleArrayException e) {
+                logger.error("Error during array operation", e);
+            }
+        }
+
+        logger.info("3. Demonstrating comparators");
+
+        FirstElementComparator<Integer> firstElementComparator = new FirstElementComparator<>();
+        SumComparator<Integer> sumComparator = new SumComparator<>();
+
+        arrays.sort(firstElementComparator);
+        logger.info("Arrays sorted by First Element:");
+        arrays.forEach(arr -> logger.info("{}", arr));
+
+        arrays.sort(sumComparator);
+        logger.info("Arrays sorted by Sum:");
+        arrays.forEach(arr -> logger.info("{}", arr));
+
+        logger.info("4. Demonstrating Observer Pattern and Warehouse");
+
+        Warehouse<Integer> warehouse = Warehouse.getInstance();
+        IntegerArrayService service = new IntegerArrayService();
+        SimpleArrayObserverImpl<Integer> observer = new SimpleArrayObserverImpl<>(warehouse, service);
+
+        if (!arrays.isEmpty()) {
+            SimpleArrayImpl<Integer> observableArray = (SimpleArrayImpl<Integer>) arrays.get(0);
+
+            observableArray.addObserver(observer);
+
+            logger.info("Initial array: {}", observableArray);
+            warehouse.getParameters(observableArray).ifPresent(params ->
+                    logger.info("Initial parameters in warehouse: {}", params)
+            );
+
+            try {
+                observableArray.replace(0, 7777);
+                logger.info("After modifying array (replaced first element with 7777): {}", observableArray);
+
+                warehouse.getParameters(observableArray).ifPresent(params ->
+                        logger.info("Updated parameters in warehouse: {}", params)
+                );
+
+            } catch (SimpleArrayException e) {
+                logger.error("Error while modifying observable array", e);
+            }
+        }
+
+        logger.info("=== SimpleArray Implementation Demo Finished ===");
     }
 }

@@ -1,6 +1,6 @@
 package by.darkimpulsepoint.task1.exception;
 
-public class SimpleArrayException extends RuntimeException {
+public class SimpleArrayException extends Exception {
     public SimpleArrayException() {
     }
 

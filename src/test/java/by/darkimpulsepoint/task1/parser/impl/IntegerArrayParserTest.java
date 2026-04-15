@@ -1,14 +1,17 @@
 package by.darkimpulsepoint.task1.parser.impl;
 
+import by.darkimpulsepoint.task1.parser.ArrayParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class IntegerArrayParserTest {
 
-    private IntegerArrayParser parser;
+    private ArrayParser<Integer> parser;
 
     @BeforeEach
     void setUp() {
@@ -16,55 +19,87 @@ class IntegerArrayParserTest {
     }
 
     @Test
-    @DisplayName("Should parse a valid line of positive integers")
-    void testParseLine_ValidPositiveIntegers() {
-        String line = "1 5 10 25 100";
-        Integer[] expected = {1, 5, 10, 25, 100};
+    @DisplayName("Should correctly parse line with multiple integers separated by spaces")
+    void shouldParseMultipleIntegers() {
+        String input = "1 2 3 4 5";
+        Integer[] expected = {1, 2, 3, 4, 5};
 
-        Integer[] actual = parser.parseLine(line);
+        Integer[] result = parser.parseLine(input);
 
-        assertArrayEquals(expected, actual);
+        assertArrayEquals(expected, result);
     }
 
     @Test
-    @DisplayName("Should parse a line with negative and zero integers")
-    void testParseLine_WithNegativeAndZero() {
-        String line = "-10 0 5 -1 50";
-        Integer[] expected = {-10, 0, 5, -1, 50};
+    @DisplayName("Should parse line with single integer")
+    void shouldParseSingleInteger() {
+        String input = "42";
+        Integer[] expected = {42};
 
-        Integer[] actual = parser.parseLine(line);
+        Integer[] result = parser.parseLine(input);
 
-        assertArrayEquals(expected, actual);
+        assertArrayEquals(expected, result);
     }
 
     @Test
-    @DisplayName("Should handle extra spaces between and around numbers")
-    void testParseLine_WithExtraSpaces() {
-        String line = "   5    10   -20 ";
-        Integer[] expected = {5, 10, -20};
+    @DisplayName("Should parse line with negative numbers")
+    void shouldParseNegativeNumbers() {
+        String input = "-5 -10 0 15 -999";
+        Integer[] expected = {-5, -10, 0, 15, -999};
 
-        Integer[] actual = parser.parseLine(line);
+        Integer[] result = parser.parseLine(input);
 
-        assertArrayEquals(expected, actual);
+        assertArrayEquals(expected, result);
     }
 
     @Test
-    @DisplayName("Should throw NumberFormatException for a line with invalid characters")
-    void testParseLine_InvalidCharacters_ShouldThrowException() {
-        String line = "1 2 three 4";
+    @DisplayName("Should parse line with extra whitespace")
+    void shouldHandleExtraWhitespace() {
+        String input = "  10   20    30  ";
+        Integer[] expected = {10, 20, 30};
 
-        assertThrows(NumberFormatException.class, () -> {
-            parser.parseLine(line);
-        });
+        Integer[] result = parser.parseLine(input);
+
+        assertArrayEquals(expected, result);
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @DisplayName("Should throw NullPointerException when input is null")
+    void shouldThrowExceptionWhenInputIsNull(String input) {
+        assertThrows(NullPointerException.class, () -> parser.parseLine(input));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "1 2 abc 4",
+            "123 45.6 78",
+            "1 two 3",
+            "1 2 3.14"
+    })
+    @DisplayName("Should throw NumberFormatException for invalid integer formats")
+    void shouldThrowNumberFormatExceptionForInvalidInput(String input) {
+        assertThrows(NumberFormatException.class, () -> parser.parseLine(input));
     }
 
     @Test
-    @DisplayName("Should throw NumberFormatException for an empty string")
-    void testParseLine_EmptyString_ShouldThrowException() {
-        String line = "";
+    @DisplayName("Should handle very large integers within Integer range")
+    void shouldParseLargeIntegersWithinRange() {
+        String input = Integer.MAX_VALUE + " " + Integer.MIN_VALUE + " 0";
+        Integer[] expected = {Integer.MAX_VALUE, Integer.MIN_VALUE, 0};
 
-        assertThrows(NumberFormatException.class, () -> {
-            parser.parseLine(line);
-        });
+        Integer[] result = parser.parseLine(input);
+
+        assertArrayEquals(expected, result);
+    }
+
+    @Test
+    @DisplayName("Should parse line with only one number and multiple spaces")
+    void shouldParseWithMultipleSpaces() {
+        String input = "   777   ";
+        Integer[] expected = {777};
+
+        Integer[] result = parser.parseLine(input);
+
+        assertArrayEquals(expected, result);
     }
 }
