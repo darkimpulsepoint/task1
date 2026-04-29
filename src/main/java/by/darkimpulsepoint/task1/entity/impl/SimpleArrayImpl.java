@@ -1,5 +1,6 @@
-package by.darkimpulsepoint.task1.entity;
+package by.darkimpulsepoint.task1.entity.impl;
 
+import by.darkimpulsepoint.task1.entity.SimpleArray;
 import by.darkimpulsepoint.task1.exception.SimpleArrayException;
 import by.darkimpulsepoint.task1.observer.SimpleArrayObserver;
 
@@ -7,13 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleArrayImpl<T> implements SimpleArray<T> {
+    private static final int DEFAULT_CAPACITY = 10;
     private Long id;
     private T[] array;
     private int size;
     private List<SimpleArrayObserver<T>> observers;
 
     public SimpleArrayImpl(int capacity) {
-        this.array = (T[]) new Object[capacity];
+        this.array = (T[]) new Object[capacity > 0 ? capacity : DEFAULT_CAPACITY];
         observers = new ArrayList<>();
     }
 
@@ -36,12 +38,13 @@ public class SimpleArrayImpl<T> implements SimpleArray<T> {
 
     @Override
     public void add(T element) {
-        T[] newArray = (T[]) new Object[++size];
-
-        if (size - 1 >= 0) System.arraycopy(array, 0, newArray, 0, size - 1);
-
-        newArray[size - 1] = element;
-        array = newArray;
+        if (size == array.length) {
+            int newCapacity = array.length * 2;
+            T[] newArray = (T[]) new Object[newCapacity];
+            System.arraycopy(array, 0, newArray, 0, size);
+            array = newArray;
+        }
+        array[size++] = element;
         notifyObservers();
     }
 

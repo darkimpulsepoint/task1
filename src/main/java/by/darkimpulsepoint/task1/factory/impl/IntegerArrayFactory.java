@@ -1,7 +1,7 @@
 package by.darkimpulsepoint.task1.factory.impl;
 
 import by.darkimpulsepoint.task1.entity.SimpleArray;
-import by.darkimpulsepoint.task1.entity.SimpleArrayImpl;
+import by.darkimpulsepoint.task1.entity.impl.SimpleArrayImpl;
 import by.darkimpulsepoint.task1.factory.AbstractArrayFactory;
 import by.darkimpulsepoint.task1.parser.impl.IntegerArrayParser;
 import by.darkimpulsepoint.task1.validator.impl.IntegersLineValidator;
@@ -9,13 +9,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.Optional;
 
-public class NumericArrayFactory implements AbstractArrayFactory<SimpleArray<Integer>> {
+public class IntegerArrayFactory implements AbstractArrayFactory<SimpleArray<Integer>> {
 
     private final IntegersLineValidator validator;
-    private static final Logger logger = LogManager.getLogger(NumericArrayFactory.class);
+    private final IntegerArrayParser parser;
+    private static final Logger logger = LogManager.getLogger(IntegerArrayFactory.class);
 
-    public NumericArrayFactory(IntegersLineValidator validator) {
+    public IntegerArrayFactory(IntegersLineValidator validator) {
         this.validator = validator;
+        this.parser = new IntegerArrayParser();
     }
 
     @Override
@@ -27,10 +29,9 @@ public class NumericArrayFactory implements AbstractArrayFactory<SimpleArray<Int
 
         if (validator.validate(line)) {
             try {
-                var parser = new IntegerArrayParser();
                 Integer[] parsedValues = parser.parseLine(line);
 
-                SimpleArrayImpl<Integer> array = new SimpleArrayImpl<>(10); // начальная ёмкость
+                SimpleArrayImpl<Integer> array = new SimpleArrayImpl<>(10);
 
                 for (Integer value : parsedValues) {
                     if (value != null) {

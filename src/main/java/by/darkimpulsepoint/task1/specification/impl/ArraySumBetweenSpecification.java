@@ -1,6 +1,6 @@
 package by.darkimpulsepoint.task1.specification.impl;
 
-import by.darkimpulsepoint.task1.entity.SimpleArrayImpl;
+import by.darkimpulsepoint.task1.entity.impl.SimpleArrayImpl;
 import by.darkimpulsepoint.task1.service.NumericArrayService;
 import by.darkimpulsepoint.task1.specification.ArraySpecification;
 

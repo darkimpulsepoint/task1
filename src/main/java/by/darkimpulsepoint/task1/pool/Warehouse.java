@@ -8,7 +8,7 @@ import java.util.Optional;
 public class Warehouse<T> {
 
     private static Warehouse<?> instance;
-    private final Map<SimpleArray<T>, ArrayParameters<T>> storage = new HashMap<>();
+    private final Map<Long, ArrayParameters<T>> storage = new HashMap<>();
 
     private Warehouse() {
     }
@@ -22,12 +22,19 @@ public class Warehouse<T> {
 
     public void put(SimpleArray<T> array, ArrayParameters<T> parameters) {
         if (array != null && parameters != null) {
-            storage.put(array, parameters);
+            storage.put(array.getId(), parameters);
         }
     }
 
     public Optional<ArrayParameters<T>> getParameters(SimpleArray<T> array) {
-        return Optional.ofNullable(storage.get(array));
+        if (array == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(storage.get(array.getId()));
+    }
+
+    public Optional<ArrayParameters<T>> getParameters(long id) {
+        return Optional.ofNullable(storage.get(id));
     }
 
     public void clear() {

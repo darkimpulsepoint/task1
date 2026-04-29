@@ -1,7 +1,7 @@
 package by.darkimpulsepoint.task1.factory.impl;
 
 import by.darkimpulsepoint.task1.entity.SimpleArray;
-import by.darkimpulsepoint.task1.entity.SimpleArrayImpl;
+import by.darkimpulsepoint.task1.entity.impl.SimpleArrayImpl;
 import by.darkimpulsepoint.task1.exception.SimpleArrayException;
 import by.darkimpulsepoint.task1.validator.impl.IntegersLineValidator;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,14 +12,14 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class NumericArrayFactoryTest {
+class IntegerArrayFactoryTest {
 
-    private NumericArrayFactory factory;
+    private IntegerArrayFactory factory;
 
     @BeforeEach
     void setUp() {
         IntegersLineValidator validator = new IntegersLineValidator();
-        factory = new NumericArrayFactory(validator);
+        factory = new IntegerArrayFactory(validator);
     }
 
     private SimpleArrayImpl<Integer> createExpectedArray(int[] elements) {

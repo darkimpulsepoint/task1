@@ -3,12 +3,12 @@ package by.darkimpulsepoint.task1.main;
 import by.darkimpulsepoint.task1.comparator.impl.FirstElementComparator;
 import by.darkimpulsepoint.task1.comparator.impl.SumComparator;
 import by.darkimpulsepoint.task1.entity.SimpleArray;
-import by.darkimpulsepoint.task1.entity.SimpleArrayImpl;
+import by.darkimpulsepoint.task1.entity.impl.SimpleArrayImpl;
 import by.darkimpulsepoint.task1.exception.SimpleArrayException;
-import by.darkimpulsepoint.task1.factory.impl.NumericArrayFactory;
+import by.darkimpulsepoint.task1.factory.impl.IntegerArrayFactory;
 import by.darkimpulsepoint.task1.observer.impl.SimpleArrayObserverImpl;
 import by.darkimpulsepoint.task1.pool.Warehouse;
-import by.darkimpulsepoint.task1.service.impl.IntegerArrayService;
+import by.darkimpulsepoint.task1.service.impl.IntegerArrayMathService;
 import by.darkimpulsepoint.task1.validator.impl.IntegersLineValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,7 +28,7 @@ public class Main {
         logger.info("1. Creating arrays from strings using NumericArrayFactory");
 
         IntegersLineValidator validator = new IntegersLineValidator();
-        NumericArrayFactory factory = new NumericArrayFactory(validator);
+        IntegerArrayFactory factory = new IntegerArrayFactory(validator);
 
         String[] inputLines = {
                 "10 20 30 40",
@@ -85,8 +85,8 @@ public class Main {
         logger.info("4. Demonstrating Observer Pattern and Warehouse");
 
         Warehouse<Integer> warehouse = Warehouse.getInstance();
-        IntegerArrayService service = new IntegerArrayService();
-        SimpleArrayObserverImpl<Integer> observer = new SimpleArrayObserverImpl<>(warehouse, service);
+        IntegerArrayMathService mathService = new IntegerArrayMathService();
+        SimpleArrayObserverImpl<Integer> observer = new SimpleArrayObserverImpl<>(warehouse, mathService);
 
         if (!arrays.isEmpty()) {
             SimpleArrayImpl<Integer> observableArray = (SimpleArrayImpl<Integer>) arrays.get(0);
