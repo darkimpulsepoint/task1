@@ -19,7 +19,6 @@ public class ArrayReaderImpl implements ArrayReader {
         List<String> data;
         try {
             data = Files.readAllLines(path);
-            logger.info("Successfully read {}", filename);
         } catch (IOException e) {
             logger.error("Error reading file {}", filename);
             throw new ArrayReaderException("Error reading file " + filename, e);

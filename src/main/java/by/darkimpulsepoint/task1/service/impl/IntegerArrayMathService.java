@@ -26,7 +26,6 @@ public class IntegerArrayMathService implements NumericArrayMathService<Integer>
                     max = current;
                 }
             }
-            logger.info("Found max element: {}", max);
             return Optional.ofNullable(max);
         } catch (SimpleArrayException e){
             logger.error("Failed to find max element", e);
@@ -49,7 +48,6 @@ public class IntegerArrayMathService implements NumericArrayMathService<Integer>
                 }
             }
 
-            logger.info("Found min element: {}", min);
             return Optional.ofNullable(min);
         } catch (SimpleArrayException e){
             logger.error("Failed to find min element", e);
@@ -71,7 +69,6 @@ public class IntegerArrayMathService implements NumericArrayMathService<Integer>
                     sum = sum + value;
                 }
             }
-            logger.info("Sum of array: {}", sum);
             return Optional.of(sum);
         } catch (SimpleArrayException e) {
             logger.error("Failed to find sum", e);
@@ -100,7 +97,6 @@ public class IntegerArrayMathService implements NumericArrayMathService<Integer>
 
         double average = sum / array.size();
 
-        logger.info("Average of array: {}", average);
         return Optional.of(average);
     }
 }

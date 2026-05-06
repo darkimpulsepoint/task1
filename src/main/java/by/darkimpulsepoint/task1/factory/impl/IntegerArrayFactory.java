@@ -22,8 +22,7 @@ public class IntegerArrayFactory implements AbstractArrayFactory<SimpleArray<Int
 
     @Override
     public Optional<SimpleArray<Integer>> createArray(String line) {
-        if (line == null || line.trim().isEmpty()) {
-            logger.warn("Cannot create array from null or empty line");
+        if (line == null || line.isBlank()) {
             return Optional.empty();
         }
 
@@ -39,18 +38,13 @@ public class IntegerArrayFactory implements AbstractArrayFactory<SimpleArray<Int
                     }
                 }
 
-                logger.info("Successfully created NumericArray with {} elements from line: {}",
-                        array.size(), line);
-
                 return Optional.of(array);
 
             } catch (Exception e) {
                 logger.error("Error while creating array from line: {}", line, e);
                 return Optional.empty();
             }
-        } else {
-            logger.warn("Validation failed for line: {}", line);
-            return Optional.empty();
         }
+        return Optional.empty();
     }
 }

@@ -21,7 +21,7 @@ public class FirstElementComparator<E extends Comparable<E>> implements SimpleAr
 
             return firstA.compareTo(firstB);
         } catch (SimpleArrayException e) {
-            logger.error("Error accessing element");
+            logger.error("Error accessing element", e);
             return 0;
         }
     }

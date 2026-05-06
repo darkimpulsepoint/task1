@@ -4,12 +4,8 @@ import by.darkimpulsepoint.task1.entity.SimpleArray;
 import by.darkimpulsepoint.task1.exception.ArrayServiceException;
 import by.darkimpulsepoint.task1.exception.SimpleArrayException;
 import by.darkimpulsepoint.task1.service.ArraySortService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class IntegerArraySortService implements ArraySortService<SimpleArray<Integer>, Integer> {
-
-    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public void bubbleSort(SimpleArray<Integer> array) throws ArrayServiceException {
@@ -35,8 +31,6 @@ public class IntegerArraySortService implements ArraySortService<SimpleArray<Int
                 }
             }
         }
-
-        logger.info("Bubble sort completed for array");
     }
 
     @Override
@@ -51,7 +45,6 @@ public class IntegerArraySortService implements ArraySortService<SimpleArray<Int
 
         try {
             quickSortRecursive(array, 0, array.size() - 1);
-            logger.info("Quick sort completed for array");
         } catch (SimpleArrayException e) {
             throw new ArrayServiceException("Failed to quick sort array", e);
         }
