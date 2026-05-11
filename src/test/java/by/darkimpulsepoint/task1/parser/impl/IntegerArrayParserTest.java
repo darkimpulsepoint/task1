@@ -1,6 +1,6 @@
 package by.darkimpulsepoint.task1.parser.impl;
 
-import by.darkimpulsepoint.task1.parser.ArrayParser;
+import by.darkimpulsepoint.task1.entity.IntegerArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IntegerArrayParserTest {
 
-    private ArrayParser<Integer> parser;
+    private IntegerArrayParser parser;
 
     @BeforeEach
     void setUp() {
@@ -20,46 +20,56 @@ class IntegerArrayParserTest {
 
     @Test
     @DisplayName("Should correctly parse line with multiple integers separated by spaces")
-    void shouldParseMultipleIntegers() {
+    void shouldParseMultipleIntegers() throws Exception {
         String input = "1 2 3 4 5";
-        Integer[] expected = {1, 2, 3, 4, 5};
 
-        Integer[] result = parser.parseLine(input);
+        IntegerArray result = parser.parseLine(input);
 
-        assertArrayEquals(expected, result);
+        assertEquals(5, result.size());
+        assertEquals(1, result.get(0));
+        assertEquals(2, result.get(1));
+        assertEquals(3, result.get(2));
+        assertEquals(4, result.get(3));
+        assertEquals(5, result.get(4));
     }
 
     @Test
     @DisplayName("Should parse line with single integer")
-    void shouldParseSingleInteger() {
+    void shouldParseSingleInteger() throws Exception {
         String input = "42";
-        Integer[] expected = {42};
 
-        Integer[] result = parser.parseLine(input);
+        IntegerArray result = parser.parseLine(input);
 
-        assertArrayEquals(expected, result);
+        assertEquals(1, result.size());
+        assertEquals(42, result.get(0));
     }
 
     @Test
     @DisplayName("Should parse line with negative numbers")
-    void shouldParseNegativeNumbers() {
+    void shouldParseNegativeNumbers() throws Exception {
         String input = "-5 -10 0 15 -999";
-        Integer[] expected = {-5, -10, 0, 15, -999};
 
-        Integer[] result = parser.parseLine(input);
+        IntegerArray result = parser.parseLine(input);
 
-        assertArrayEquals(expected, result);
+        assertEquals(5, result.size());
+        assertEquals(-5, result.get(0));
+        assertEquals(-10, result.get(1));
+        assertEquals(0, result.get(2));
+        assertEquals(15, result.get(3));
+        assertEquals(-999, result.get(4));
     }
 
     @Test
     @DisplayName("Should parse line with extra whitespace")
-    void shouldHandleExtraWhitespace() {
+    void shouldHandleExtraWhitespace() throws Exception {
         String input = "  10   20    30  ";
-        Integer[] expected = {10, 20, 30};
 
-        Integer[] result = parser.parseLine(input);
+        IntegerArray result = parser.parseLine(input);
 
-        assertArrayEquals(expected, result);
+        assertEquals(3, result.size());
+        assertEquals(10, result.get(0));
+        assertEquals(20, result.get(1));
+        assertEquals(30, result.get(2));
     }
 
     @ParameterizedTest
@@ -83,23 +93,25 @@ class IntegerArrayParserTest {
 
     @Test
     @DisplayName("Should handle very large integers within Integer range")
-    void shouldParseLargeIntegersWithinRange() {
+    void shouldParseLargeIntegersWithinRange() throws Exception {
         String input = Integer.MAX_VALUE + " " + Integer.MIN_VALUE + " 0";
-        Integer[] expected = {Integer.MAX_VALUE, Integer.MIN_VALUE, 0};
 
-        Integer[] result = parser.parseLine(input);
+        IntegerArray result = parser.parseLine(input);
 
-        assertArrayEquals(expected, result);
+        assertEquals(3, result.size());
+        assertEquals(Integer.MAX_VALUE, result.get(0));
+        assertEquals(Integer.MIN_VALUE, result.get(1));
+        assertEquals(0, result.get(2));
     }
 
     @Test
     @DisplayName("Should parse line with only one number and multiple spaces")
-    void shouldParseWithMultipleSpaces() {
+    void shouldParseWithMultipleSpaces() throws Exception {
         String input = "   777   ";
-        Integer[] expected = {777};
 
-        Integer[] result = parser.parseLine(input);
+        IntegerArray result = parser.parseLine(input);
 
-        assertArrayEquals(expected, result);
+        assertEquals(1, result.size());
+        assertEquals(777, result.get(0));
     }
 }

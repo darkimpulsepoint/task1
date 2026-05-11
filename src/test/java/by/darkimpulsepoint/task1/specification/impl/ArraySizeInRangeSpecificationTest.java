@@ -1,6 +1,6 @@
 package by.darkimpulsepoint.task1.specification.impl;
 
-import by.darkimpulsepoint.task1.entity.impl.SimpleArrayImpl;
+import by.darkimpulsepoint.task1.entity.IntegerArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ArraySizeInRangeSpecificationTest {
 
-    private SimpleArrayImpl<Integer> array;
+    private IntegerArray array;
 
     @BeforeEach
     void setUp() {
-        array = new SimpleArrayImpl<>(10);
+        array = new IntegerArray(10);
     }
 
     @Test
@@ -21,7 +21,7 @@ class ArraySizeInRangeSpecificationTest {
         array.add(2);
         array.add(3);
 
-        ArraySizeInRangeSpecification<Integer> specification = new ArraySizeInRangeSpecification<>(2, 5);
+        ArraySizeInRangeSpecification specification = new ArraySizeInRangeSpecification(2, 5);
 
         assertTrue(specification.isSatisfiedBy(array));
     }
@@ -30,7 +30,7 @@ class ArraySizeInRangeSpecificationTest {
     void isSatisfiedBy_SizeBelowRange_ShouldReturnFalse() {
         array.add(1);
 
-        ArraySizeInRangeSpecification<Integer> specification = new ArraySizeInRangeSpecification<>(2, 5);
+        ArraySizeInRangeSpecification specification = new ArraySizeInRangeSpecification(2, 5);
 
         assertFalse(specification.isSatisfiedBy(array));
     }
@@ -41,7 +41,7 @@ class ArraySizeInRangeSpecificationTest {
             array.add(i);
         }
 
-        ArraySizeInRangeSpecification<Integer> specification = new ArraySizeInRangeSpecification<>(2, 5);
+        ArraySizeInRangeSpecification specification = new ArraySizeInRangeSpecification(2, 5);
 
         assertFalse(specification.isSatisfiedBy(array));
     }
@@ -51,7 +51,7 @@ class ArraySizeInRangeSpecificationTest {
         array.add(1);
         array.add(2);
 
-        ArraySizeInRangeSpecification<Integer> specification = new ArraySizeInRangeSpecification<>(2, 5);
+        ArraySizeInRangeSpecification specification = new ArraySizeInRangeSpecification(2, 5);
 
         assertTrue(specification.isSatisfiedBy(array));
     }
@@ -62,14 +62,14 @@ class ArraySizeInRangeSpecificationTest {
             array.add(i);
         }
 
-        ArraySizeInRangeSpecification<Integer> specification = new ArraySizeInRangeSpecification<>(2, 5);
+        ArraySizeInRangeSpecification specification = new ArraySizeInRangeSpecification(2, 5);
 
         assertTrue(specification.isSatisfiedBy(array));
     }
 
     @Test
     void isSatisfiedBy_NullArray_ShouldReturnFalse() {
-        ArraySizeInRangeSpecification<Integer> specification = new ArraySizeInRangeSpecification<>(2, 5);
+        ArraySizeInRangeSpecification specification = new ArraySizeInRangeSpecification(2, 5);
 
         assertFalse(specification.isSatisfiedBy(null));
     }

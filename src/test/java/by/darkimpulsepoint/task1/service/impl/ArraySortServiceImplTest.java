@@ -1,21 +1,21 @@
 package by.darkimpulsepoint.task1.service.impl;
 
-import by.darkimpulsepoint.task1.entity.impl.SimpleArrayImpl;
+import by.darkimpulsepoint.task1.entity.IntegerArray;
 import by.darkimpulsepoint.task1.exception.ArrayServiceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class IntegerArraySortServiceTest {
+class ArraySortServiceImplTest {
 
-    private IntegerArraySortService service;
-    private SimpleArrayImpl<Integer> array;
+    private ArraySortServiceImpl service;
+    private IntegerArray array;
 
     @BeforeEach
     void setUp() {
-        service = new IntegerArraySortService();
-        array = new SimpleArrayImpl<>(10);
+        service = new ArraySortServiceImpl();
+        array = new IntegerArray(10);
     }
 
     @Test

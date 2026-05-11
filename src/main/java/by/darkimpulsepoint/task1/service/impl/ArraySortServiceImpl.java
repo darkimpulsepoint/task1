@@ -1,14 +1,14 @@
 package by.darkimpulsepoint.task1.service.impl;
 
-import by.darkimpulsepoint.task1.entity.SimpleArray;
+import by.darkimpulsepoint.task1.entity.IntegerArray;
 import by.darkimpulsepoint.task1.exception.ArrayServiceException;
 import by.darkimpulsepoint.task1.exception.SimpleArrayException;
 import by.darkimpulsepoint.task1.service.ArraySortService;
 
-public class IntegerArraySortService implements ArraySortService<SimpleArray<Integer>, Integer> {
+public class ArraySortServiceImpl implements ArraySortService {
 
     @Override
-    public void bubbleSort(SimpleArray<Integer> array) throws ArrayServiceException {
+    public void bubbleSort(IntegerArray array) throws ArrayServiceException {
         if (array == null) {
             throw new ArrayServiceException("Array cannot be null");
         }
@@ -17,14 +17,12 @@ public class IntegerArraySortService implements ArraySortService<SimpleArray<Int
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
                 try {
-                    Integer a = array.get(j);
-                    Integer b = array.get(j + 1);
+                    int a = array.get(j);
+                    int b = array.get(j + 1);
 
-                    if (a != null && b != null) {
-                        if (a.compareTo(b) > 0) {
-                            array.replace(j, b);
-                            array.replace(j + 1, a);
-                        }
+                    if (a > b) {
+                        array.set(j, b);
+                        array.set(j + 1, a);
                     }
                 } catch (SimpleArrayException e) {
                     throw new ArrayServiceException("Failed to bubble sort array", e);
@@ -34,7 +32,7 @@ public class IntegerArraySortService implements ArraySortService<SimpleArray<Int
     }
 
     @Override
-    public void quickSort(SimpleArray<Integer> array) throws ArrayServiceException {
+    public void quickSort(IntegerArray array) throws ArrayServiceException {
         if (array == null) {
             throw new ArrayServiceException("Array cannot be null");
         }
@@ -50,7 +48,7 @@ public class IntegerArraySortService implements ArraySortService<SimpleArray<Int
         }
     }
 
-    private void quickSortRecursive(SimpleArray<Integer> array, int low, int high) throws SimpleArrayException {
+    private void quickSortRecursive(IntegerArray array, int low, int high) throws SimpleArrayException {
         if (low < high) {
             int pivotIndex = partition(array, low, high);
             quickSortRecursive(array, low, pivotIndex - 1);
@@ -58,13 +56,13 @@ public class IntegerArraySortService implements ArraySortService<SimpleArray<Int
         }
     }
 
-    private int partition(SimpleArray<Integer> array, int low, int high) throws SimpleArrayException {
-        Integer pivot = array.get(high);
+    private int partition(IntegerArray array, int low, int high) throws SimpleArrayException {
+        int pivot = array.get(high);
         int i = low - 1;
 
         for (int j = low; j < high; j++) {
-            Integer current = array.get(j);
-            if (current != null && pivot != null && current.compareTo(pivot) <= 0) {
+            int current = array.get(j);
+            if (current <= pivot) {
                 i++;
                 swap(array, i, j);
             }
@@ -74,9 +72,9 @@ public class IntegerArraySortService implements ArraySortService<SimpleArray<Int
         return i + 1;
     }
 
-    private void swap(SimpleArray<Integer> array, int i, int j) throws SimpleArrayException {
-        Integer temp = array.get(i);
-        array.replace(i, array.get(j));
-        array.replace(j, temp);
+    private void swap(IntegerArray array, int i, int j) throws SimpleArrayException {
+        int temp = array.get(i);
+        array.set(i, array.get(j));
+        array.set(j, temp);
     }
 }

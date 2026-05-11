@@ -1,7 +1,6 @@
 package by.darkimpulsepoint.task1.factory.impl;
 
-import by.darkimpulsepoint.task1.entity.SimpleArray;
-import by.darkimpulsepoint.task1.entity.impl.SimpleArrayImpl;
+import by.darkimpulsepoint.task1.entity.IntegerArray;
 import by.darkimpulsepoint.task1.exception.SimpleArrayException;
 import by.darkimpulsepoint.task1.validator.impl.IntegersLineValidator;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,8 +21,8 @@ class IntegerArrayFactoryTest {
         factory = new IntegerArrayFactory(validator);
     }
 
-    private SimpleArrayImpl<Integer> createExpectedArray(int[] elements) {
-        SimpleArrayImpl<Integer> array = new SimpleArrayImpl<>(10);
+    private IntegerArray createExpectedArray(int[] elements) {
+        IntegerArray array = new IntegerArray(10);
         for (int element : elements) {
             array.add(element);
         }
@@ -31,17 +30,17 @@ class IntegerArrayFactoryTest {
     }
 
     @Test
-    @DisplayName("Should create NumericArray for a valid line")
+    @DisplayName("Should create IntegerArray for a valid line")
     void testCreateArray_WhenLineIsValid_ShouldReturnOptionalOfArray() {
         String validLine = "10 20 30 40";
 
-        Optional<SimpleArray<Integer>> resultOptional = factory.createArray(validLine);
+        Optional<IntegerArray> resultOptional = factory.createArray(validLine);
 
         assertTrue(resultOptional.isPresent(), "Optional should contain array for valid line");
 
-        SimpleArray<Integer> actualArray = resultOptional.get();
+        IntegerArray actualArray = resultOptional.get();
         int[] arr = {10, 20, 30, 40};
-        SimpleArrayImpl<Integer> expectedArray = createExpectedArray(arr);
+        IntegerArray expectedArray = createExpectedArray(arr);
 
         assertEquals(expectedArray, actualArray);
         assertEquals(4, actualArray.size());
@@ -52,7 +51,7 @@ class IntegerArrayFactoryTest {
     void testCreateArray_WhenLineIsInvalid_ShouldReturnEmptyOptional() {
         String invalidLine = "10 abc 30 50";
 
-        Optional<SimpleArray<Integer>> resultOptional = factory.createArray(invalidLine);
+        Optional<IntegerArray> resultOptional = factory.createArray(invalidLine);
 
         assertFalse(resultOptional.isPresent(), "Optional should be empty for invalid line");
     }
@@ -62,7 +61,7 @@ class IntegerArrayFactoryTest {
     void testCreateArray_WhenLineIsEmpty_ShouldReturnEmptyOptional() {
         String emptyLine = "";
 
-        Optional<SimpleArray<Integer>> resultOptional = factory.createArray(emptyLine);
+        Optional<IntegerArray> resultOptional = factory.createArray(emptyLine);
 
         assertFalse(resultOptional.isPresent());
     }
@@ -70,7 +69,7 @@ class IntegerArrayFactoryTest {
     @Test
     @DisplayName("Should return empty Optional for null line")
     void testCreateArray_WhenLineIsNull_ShouldReturnEmptyOptional() {
-        Optional<SimpleArray<Integer>> resultOptional = factory.createArray(null);
+        Optional<IntegerArray> resultOptional = factory.createArray(null);
 
         assertFalse(resultOptional.isPresent());
     }
@@ -80,7 +79,7 @@ class IntegerArrayFactoryTest {
     void testCreateArray_WithSingleElement() throws SimpleArrayException {
         String line = "999";
 
-        Optional<SimpleArray<Integer>> resultOptional = factory.createArray(line);
+        Optional<IntegerArray> resultOptional = factory.createArray(line);
 
         assertTrue(resultOptional.isPresent());
         assertEquals(1, resultOptional.get().size());
@@ -92,21 +91,20 @@ class IntegerArrayFactoryTest {
     void testCreateArray_WithNegativeNumbers() {
         String line = "-5 0 -10 7";
 
-        Optional<SimpleArray<Integer>> resultOptional = factory.createArray(line);
+        Optional<IntegerArray> resultOptional = factory.createArray(line);
 
         assertTrue(resultOptional.isPresent());
 
-        SimpleArray<Integer> array = resultOptional.get();
+        IntegerArray array = resultOptional.get();
         assertEquals(4, array.size());
 
-        // Проверяем содержимое
         assertEquals(-5, getElementSafely(array, 0));
         assertEquals(0, getElementSafely(array, 1));
         assertEquals(-10, getElementSafely(array, 2));
         assertEquals(7, getElementSafely(array, 3));
     }
 
-    private Integer getElementSafely(SimpleArray<Integer> array, int index) {
+    private Integer getElementSafely(IntegerArray array, int index) {
         try {
             return array.get(index);
         } catch (Exception e) {

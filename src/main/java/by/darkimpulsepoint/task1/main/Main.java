@@ -2,13 +2,12 @@ package by.darkimpulsepoint.task1.main;
 
 import by.darkimpulsepoint.task1.comparator.impl.FirstElementComparator;
 import by.darkimpulsepoint.task1.comparator.impl.SumComparator;
-import by.darkimpulsepoint.task1.entity.SimpleArray;
-import by.darkimpulsepoint.task1.entity.impl.SimpleArrayImpl;
+import by.darkimpulsepoint.task1.entity.IntegerArray;
 import by.darkimpulsepoint.task1.exception.SimpleArrayException;
 import by.darkimpulsepoint.task1.factory.impl.IntegerArrayFactory;
-import by.darkimpulsepoint.task1.observer.impl.SimpleArrayObserverImpl;
+import by.darkimpulsepoint.task1.pool.ArrayParameters;
 import by.darkimpulsepoint.task1.pool.Warehouse;
-import by.darkimpulsepoint.task1.service.impl.IntegerArrayMathService;
+import by.darkimpulsepoint.task1.service.impl.ArrayMathServiceImpl;
 import by.darkimpulsepoint.task1.validator.impl.IntegersLineValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,9 +22,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        logger.info("=== SimpleArray Implementation Demo Started ===");
+        logger.info("=== IntegerArray Implementation Demo Started ===");
 
-        logger.info("1. Creating arrays from strings using NumericArrayFactory");
+        logger.info("1. Creating arrays from strings using IntegerArrayFactory");
 
         IntegersLineValidator validator = new IntegersLineValidator();
         IntegerArrayFactory factory = new IntegerArrayFactory(validator);
@@ -38,10 +37,10 @@ public class Main {
                 "   "
         };
 
-        List<SimpleArray<Integer>> arrays = new ArrayList<>();
+        List<IntegerArray> arrays = new ArrayList<>();
 
         for (String line : inputLines) {
-            Optional<SimpleArray<Integer>> optionalArray = factory.createArray(line);
+            Optional<IntegerArray> optionalArray = factory.createArray(line);
             if (optionalArray.isPresent()) {
                 arrays.add(optionalArray.get());
                 logger.info("Successfully created array: {}", optionalArray.get());
@@ -53,7 +52,7 @@ public class Main {
         logger.info("Total successfully created arrays: {}", arrays.size());
 
         if (!arrays.isEmpty()) {
-            SimpleArray<Integer> array = arrays.get(0);
+            IntegerArray array = arrays.get(0);
             logger.info("2. Performing basic operations on array: {}", array);
 
             logger.info("Array size: {}", array.size());
@@ -61,7 +60,7 @@ public class Main {
             try {
                 logger.info("Element at index 2: {}", array.get(2));
 
-                array.replace(1, 999);
+                array.set(1, 999);
                 logger.info("After replacing index 1 with 999: {}", array);
 
             } catch (SimpleArrayException e) {
@@ -71,8 +70,8 @@ public class Main {
 
         logger.info("3. Demonstrating comparators");
 
-        FirstElementComparator<Integer> firstElementComparator = new FirstElementComparator<>();
-        SumComparator<Integer> sumComparator = new SumComparator<>();
+        FirstElementComparator firstElementComparator = new FirstElementComparator();
+        SumComparator sumComparator = new SumComparator();
 
         arrays.sort(firstElementComparator);
         logger.info("Arrays sorted by First Element:");
@@ -82,35 +81,52 @@ public class Main {
         logger.info("Arrays sorted by Sum:");
         arrays.forEach(arr -> logger.info("{}", arr));
 
-        logger.info("4. Demonstrating Observer Pattern and Warehouse");
+        logger.info("4. Demonstrating Warehouse");
 
-        Warehouse<Integer> warehouse = Warehouse.getInstance();
-        IntegerArrayMathService mathService = new IntegerArrayMathService();
-        SimpleArrayObserverImpl<Integer> observer = new SimpleArrayObserverImpl<>(warehouse, mathService);
+        Warehouse warehouse = Warehouse.getInstance();
+        ArrayMathServiceImpl mathService = new ArrayMathServiceImpl();
 
         if (!arrays.isEmpty()) {
-            SimpleArrayImpl<Integer> observableArray = (SimpleArrayImpl<Integer>) arrays.get(0);
+            IntegerArray array = arrays.get(0);
+            array.setId(1L);
 
-            observableArray.addObserver(observer);
+            logger.info("Initial array: {}", array);
 
-            logger.info("Initial array: {}", observableArray);
-            warehouse.getParameters(observableArray).ifPresent(params ->
-                    logger.info("Initial parameters in warehouse: {}", params)
-            );
+            Optional<Integer> max = mathService.findMaxElement(array);
+            Optional<Integer> min = mathService.findMinElement(array);
+            Optional<Integer> sum = mathService.findSum(array);
+
+            if (max.isPresent() && min.isPresent() && sum.isPresent()) {
+                ArrayParameters params = new ArrayParameters(min.get(), max.get(), sum.get());
+                warehouse.put(array, params);
+
+                warehouse.getParameters(array).ifPresent(p ->
+                        logger.info("Parameters in warehouse: {}", p)
+                );
+            }
 
             try {
-                observableArray.replace(0, 7777);
-                logger.info("After modifying array (replaced first element with 7777): {}", observableArray);
+                array.set(0, 7777);
+                logger.info("After modifying array (replaced first element with 7777): {}", array);
 
-                warehouse.getParameters(observableArray).ifPresent(params ->
-                        logger.info("Updated parameters in warehouse: {}", params)
-                );
+                max = mathService.findMaxElement(array);
+                min = mathService.findMinElement(array);
+                sum = mathService.findSum(array);
+
+                if (max.isPresent() && min.isPresent() && sum.isPresent()) {
+                    ArrayParameters params = new ArrayParameters(min.get(), max.get(), sum.get());
+                    warehouse.put(array, params);
+
+                    warehouse.getParameters(array).ifPresent(p ->
+                            logger.info("Updated parameters in warehouse: {}", p)
+                    );
+                }
 
             } catch (SimpleArrayException e) {
-                logger.error("Error while modifying observable array", e);
+                logger.error("Error while modifying array", e);
             }
         }
 
-        logger.info("=== SimpleArray Implementation Demo Finished ===");
+        logger.info("=== IntegerArray Implementation Demo Finished ===");
     }
 }

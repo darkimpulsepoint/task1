@@ -1,6 +1,6 @@
 package by.darkimpulsepoint.task1.service.impl;
 
-import by.darkimpulsepoint.task1.entity.impl.SimpleArrayImpl;
+import by.darkimpulsepoint.task1.entity.IntegerArray;
 import by.darkimpulsepoint.task1.exception.ArrayServiceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,17 +10,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class NumericArrayServiceTest {
 
-    private IntegerArraySortService sortService;
-    private IntegerArrayMathService mathService;
+    private ArraySortServiceImpl sortService;
+    private ArrayMathServiceImpl mathService;
 
     @BeforeEach
     void setUp() {
-        sortService = new IntegerArraySortService();
-        mathService = new IntegerArrayMathService();
+        sortService = new ArraySortServiceImpl();
+        mathService = new ArrayMathServiceImpl();
     }
 
-    private SimpleArrayImpl<Integer> createArrayFrom(int... elements) {
-        SimpleArrayImpl<Integer> array = new SimpleArrayImpl<>(10);
+    private IntegerArray createArrayFrom(int... elements) {
+        IntegerArray array = new IntegerArray(10);
         for (int el : elements) {
             array.add(el);
         }
@@ -30,8 +30,8 @@ class NumericArrayServiceTest {
     @Test
     @DisplayName("bubbleSort should correctly sort a standard array")
     void testBubbleSort_StandardArray() throws ArrayServiceException {
-        SimpleArrayImpl<Integer> arrayToSort = createArrayFrom(5, 1, 4, 2, 8);
-        SimpleArrayImpl<Integer> expectedArray = createArrayFrom(1, 2, 4, 5, 8);
+        IntegerArray arrayToSort = createArrayFrom(5, 1, 4, 2, 8);
+        IntegerArray expectedArray = createArrayFrom(1, 2, 4, 5, 8);
 
         sortService.bubbleSort(arrayToSort);
 
@@ -41,8 +41,8 @@ class NumericArrayServiceTest {
     @Test
     @DisplayName("bubbleSort should handle an array with negative numbers")
     void testBubbleSort_WithNegativeNumbers() throws ArrayServiceException {
-        SimpleArrayImpl<Integer> arrayToSort = createArrayFrom(-5, 10, 0, -20, 1);
-        SimpleArrayImpl<Integer> expectedArray = createArrayFrom(-20, -5, 0, 1, 10);
+        IntegerArray arrayToSort = createArrayFrom(-5, 10, 0, -20, 1);
+        IntegerArray expectedArray = createArrayFrom(-20, -5, 0, 1, 10);
 
         sortService.bubbleSort(arrayToSort);
 
@@ -52,8 +52,8 @@ class NumericArrayServiceTest {
     @Test
     @DisplayName("bubbleSort should not fail on an empty array")
     void testBubbleSort_EmptyArray() throws ArrayServiceException {
-        SimpleArrayImpl<Integer> emptyArray = createArrayFrom();
-        SimpleArrayImpl<Integer> expectedArray = createArrayFrom();
+        IntegerArray emptyArray = createArrayFrom();
+        IntegerArray expectedArray = createArrayFrom();
 
         sortService.bubbleSort(emptyArray);
 
@@ -63,8 +63,8 @@ class NumericArrayServiceTest {
     @Test
     @DisplayName("bubbleSort should handle an already sorted array")
     void testBubbleSort_AlreadySortedArray() throws ArrayServiceException {
-        SimpleArrayImpl<Integer> sortedArray = createArrayFrom(10, 20, 30, 40);
-        SimpleArrayImpl<Integer> expectedArray = createArrayFrom(10, 20, 30, 40);
+        IntegerArray sortedArray = createArrayFrom(10, 20, 30, 40);
+        IntegerArray expectedArray = createArrayFrom(10, 20, 30, 40);
 
         sortService.bubbleSort(sortedArray);
 
@@ -74,7 +74,7 @@ class NumericArrayServiceTest {
     @Test
     @DisplayName("findMaxElement should find the max value in a standard array")
     void testFindMaxElement_StandardArray() {
-        SimpleArrayImpl<Integer> array = createArrayFrom(1, 50, 2, -10, 25);
+        IntegerArray array = createArrayFrom(1, 50, 2, -10, 25);
 
         Optional<Integer> maxOptional = mathService.findMaxElement(array);
 
@@ -85,7 +85,7 @@ class NumericArrayServiceTest {
     @Test
     @DisplayName("findMaxElement should return empty Optional for an empty array")
     void testFindMaxElement_EmptyArray() {
-        SimpleArrayImpl<Integer> emptyArray = createArrayFrom();
+        IntegerArray emptyArray = createArrayFrom();
 
         Optional<Integer> maxOptional = mathService.findMaxElement(emptyArray);
 
@@ -95,7 +95,7 @@ class NumericArrayServiceTest {
     @Test
     @DisplayName("findMinElement should find the min value in a standard array")
     void testFindMinElement_StandardArray() {
-        SimpleArrayImpl<Integer> array = createArrayFrom(1, 50, 2, -10, 25);
+        IntegerArray array = createArrayFrom(1, 50, 2, -10, 25);
 
         Optional<Integer> minOptional = mathService.findMinElement(array);
 
@@ -106,7 +106,7 @@ class NumericArrayServiceTest {
     @Test
     @DisplayName("findMinElement should return empty Optional for an empty array")
     void testFindMinElement_EmptyArray() {
-        SimpleArrayImpl<Integer> emptyArray = createArrayFrom();
+        IntegerArray emptyArray = createArrayFrom();
 
         Optional<Integer> minOptional = mathService.findMinElement(emptyArray);
 
@@ -116,7 +116,7 @@ class NumericArrayServiceTest {
     @Test
     @DisplayName("findSum should calculate the correct sum")
     void testFindSum_StandardArray() {
-        SimpleArrayImpl<Integer> array = createArrayFrom(10, 20, -5, 1);
+        IntegerArray array = createArrayFrom(10, 20, -5, 1);
 
         var actualSum = mathService.findSum(array);
 
@@ -124,9 +124,9 @@ class NumericArrayServiceTest {
     }
 
     @Test
-    @DisplayName("findSum should return 0 for an empty array")
+    @DisplayName("findSum should return empty Optional for an empty array")
     void testFindSum_EmptyArray() {
-        SimpleArrayImpl<Integer> emptyArray = createArrayFrom();
+        IntegerArray emptyArray = createArrayFrom();
 
         var actualSum = mathService.findSum(emptyArray);
 
@@ -136,7 +136,7 @@ class NumericArrayServiceTest {
     @Test
     @DisplayName("findAverage should calculate the correct average")
     void testFindAverage_StandardArray() {
-        SimpleArrayImpl<Integer> array = createArrayFrom(1, 2, 3, 4, 5);
+        IntegerArray array = createArrayFrom(1, 2, 3, 4, 5);
 
         var actualAverage = mathService.findAverage(array);
 
@@ -144,9 +144,9 @@ class NumericArrayServiceTest {
     }
 
     @Test
-    @DisplayName("findAverage should return 0.0 for an empty array")
+    @DisplayName("findAverage should return empty Optional for an empty array")
     void testFindAverage_EmptyArray() {
-        SimpleArrayImpl<Integer> emptyArray = createArrayFrom();
+        IntegerArray emptyArray = createArrayFrom();
 
         var actualAverage = mathService.findAverage(emptyArray);
 
@@ -154,13 +154,13 @@ class NumericArrayServiceTest {
     }
 
     @Test
-    @DisplayName("bubbleSort should throw SimpleArrayException when array is null")
+    @DisplayName("bubbleSort should throw ArrayServiceException when array is null")
     void testBubbleSort_NullArray() {
         assertThrows(ArrayServiceException.class, () -> sortService.bubbleSort(null));
     }
 
     @Test
-    @DisplayName("findMaxElement should throw SimpleArrayException when array is null")
+    @DisplayName("findMaxElement should return empty Optional when array is null")
     void testFindMaxElement_NullArray() {
         assertFalse(mathService.findMaxElement(null).isPresent());
     }

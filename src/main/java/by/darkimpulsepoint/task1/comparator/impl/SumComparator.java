@@ -1,29 +1,26 @@
 package by.darkimpulsepoint.task1.comparator.impl;
 
 import by.darkimpulsepoint.task1.comparator.SimpleArrayComparator;
-import by.darkimpulsepoint.task1.entity.SimpleArray;
+import by.darkimpulsepoint.task1.entity.IntegerArray;
 import by.darkimpulsepoint.task1.exception.SimpleArrayException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class SumComparator<E extends Number> implements SimpleArrayComparator<SimpleArray<E>> {
+public class SumComparator implements SimpleArrayComparator {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
-    public int compare(SimpleArray<E> a, SimpleArray<E> b) {
-        double sumA = calculateSum(a);
-        double sumB = calculateSum(b);
-        return Double.compare(sumA, sumB);
+    public int compare(IntegerArray a, IntegerArray b) {
+        int sumA = calculateSum(a);
+        int sumB = calculateSum(b);
+        return Integer.compare(sumA, sumB);
     }
 
-    private double calculateSum(SimpleArray<E> array) {
-        double sum = 0.0;
+    private int calculateSum(IntegerArray array) {
+        int sum = 0;
         for (int i = 0; i < array.size(); i++) {
             try {
-                E num = array.get(i);
-                if (num != null) {
-                    sum += num.doubleValue();
-                }
+                sum += array.get(i);
             } catch (SimpleArrayException e) {
                 logger.error("Error accessing element", e);
                 return 0;

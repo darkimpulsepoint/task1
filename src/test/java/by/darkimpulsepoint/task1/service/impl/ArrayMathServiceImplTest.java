@@ -1,6 +1,6 @@
 package by.darkimpulsepoint.task1.service.impl;
 
-import by.darkimpulsepoint.task1.entity.impl.SimpleArrayImpl;
+import by.darkimpulsepoint.task1.entity.IntegerArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,15 +8,15 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class IntegerArrayMathServiceTest {
+class ArrayMathServiceImplTest {
 
-    private IntegerArrayMathService service;
-    private SimpleArrayImpl<Integer> array;
+    private ArrayMathServiceImpl service;
+    private IntegerArray array;
 
     @BeforeEach
     void setUp() {
-        service = new IntegerArrayMathService();
-        array = new SimpleArrayImpl<>(10);
+        service = new ArrayMathServiceImpl();
+        array = new IntegerArray(10);
     }
 
     @Test
@@ -68,15 +68,9 @@ class IntegerArrayMathServiceTest {
     }
 
     @Test
-    void findSum_WithNullElements_ShouldIgnoreNullsAndReturnSum() {
-        array.add(5);
-        array.add(null);
-        array.add(10);
-
+    void findSum_EmptyArray_ShouldReturnEmptyOptional() {
         Optional<Integer> sum = service.findSum(array);
-
-        assertTrue(sum.isPresent());
-        assertEquals(15, sum.get());
+        assertTrue(sum.isEmpty());
     }
 
     @Test

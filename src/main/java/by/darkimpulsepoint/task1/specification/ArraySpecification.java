@@ -1,6 +1,8 @@
 package by.darkimpulsepoint.task1.specification;
 
-public interface ArraySpecification<T> {
+import by.darkimpulsepoint.task1.entity.IntegerArray;
 
-    boolean isSatisfiedBy(T array);
+public interface ArraySpecification {
+
+    boolean isSatisfiedBy(IntegerArray array);
 }

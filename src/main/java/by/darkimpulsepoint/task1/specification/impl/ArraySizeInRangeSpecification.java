@@ -1,9 +1,9 @@
 package by.darkimpulsepoint.task1.specification.impl;
 
-import by.darkimpulsepoint.task1.entity.SimpleArray;
+import by.darkimpulsepoint.task1.entity.IntegerArray;
 import by.darkimpulsepoint.task1.specification.ArraySpecification;
 
-public class ArraySizeInRangeSpecification<T> implements ArraySpecification<SimpleArray<T>> {
+public class ArraySizeInRangeSpecification implements ArraySpecification {
     private final int minSize;
     private final int maxSize;
 
@@ -13,7 +13,7 @@ public class ArraySizeInRangeSpecification<T> implements ArraySpecification<Simp
     }
 
     @Override
-    public boolean isSatisfiedBy(SimpleArray<T> array) {
+    public boolean isSatisfiedBy(IntegerArray array) {
         if (array == null) {
             return false;
         }

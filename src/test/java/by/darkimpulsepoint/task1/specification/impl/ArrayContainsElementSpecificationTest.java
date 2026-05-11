@@ -1,6 +1,6 @@
 package by.darkimpulsepoint.task1.specification.impl;
 
-import by.darkimpulsepoint.task1.entity.impl.SimpleArrayImpl;
+import by.darkimpulsepoint.task1.entity.IntegerArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ArrayContainsElementSpecificationTest {
 
-    private SimpleArrayImpl<Integer> array;
+    private IntegerArray array;
 
     @BeforeEach
     void setUp() {
-        array = new SimpleArrayImpl<>(10);
+        array = new IntegerArray(10);
     }
 
     @Test
@@ -21,7 +21,7 @@ class ArrayContainsElementSpecificationTest {
         array.add(5);
         array.add(10);
 
-        ArrayContainsElementSpecification<Integer> specification = new ArrayContainsElementSpecification<>(5);
+        ArrayContainsElementSpecification specification = new ArrayContainsElementSpecification(5);
 
         assertTrue(specification.isSatisfiedBy(array));
     }
@@ -32,32 +32,22 @@ class ArrayContainsElementSpecificationTest {
         array.add(5);
         array.add(10);
 
-        ArrayContainsElementSpecification<Integer> specification = new ArrayContainsElementSpecification<>(99);
+        ArrayContainsElementSpecification specification = new ArrayContainsElementSpecification(99);
 
         assertFalse(specification.isSatisfiedBy(array));
     }
 
     @Test
     void isSatisfiedBy_EmptyArray_ShouldReturnFalse() {
-        ArrayContainsElementSpecification<Integer> specification = new ArrayContainsElementSpecification<>(5);
+        ArrayContainsElementSpecification specification = new ArrayContainsElementSpecification(5);
 
         assertFalse(specification.isSatisfiedBy(array));
     }
 
     @Test
     void isSatisfiedBy_NullArray_ShouldReturnFalse() {
-        ArrayContainsElementSpecification<Integer> specification = new ArrayContainsElementSpecification<>(5);
+        ArrayContainsElementSpecification specification = new ArrayContainsElementSpecification(5);
 
         assertFalse(specification.isSatisfiedBy(null));
-    }
-
-    @Test
-    void isSatisfiedBy_NullElement_ShouldReturnFalse() {
-        array.add(1);
-        array.add(5);
-
-        ArrayContainsElementSpecification<Integer> specification = new ArrayContainsElementSpecification<>(null);
-
-        assertFalse(specification.isSatisfiedBy(array));
     }
 }

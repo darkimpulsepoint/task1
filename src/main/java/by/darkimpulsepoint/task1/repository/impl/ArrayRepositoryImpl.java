@@ -1,6 +1,6 @@
 package by.darkimpulsepoint.task1.repository.impl;
 
-import by.darkimpulsepoint.task1.entity.SimpleArray;
+import by.darkimpulsepoint.task1.entity.IntegerArray;
 import by.darkimpulsepoint.task1.repository.ArrayRepository;
 import by.darkimpulsepoint.task1.specification.ArraySpecification;
 import java.util.ArrayList;
@@ -8,38 +8,38 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ArrayRepositoryImpl<T extends SimpleArray<?>> implements ArrayRepository<T> {
+public class ArrayRepositoryImpl implements ArrayRepository {
 
-    private final List<T> storage = new ArrayList<>();
+    private final List<IntegerArray> storage = new ArrayList<>();
 
     @Override
-    public void add(T simpleArray) {
-        if (simpleArray == null) {
-            throw new IllegalArgumentException("Cannot add null SimpleArray");
+    public void add(IntegerArray array) {
+        if (array == null) {
+            throw new IllegalArgumentException("Cannot add null IntegerArray");
         }
-        storage.add(simpleArray);
+        storage.add(array);
     }
 
     @Override
-    public void remove(T simpleArray) {
-        if (simpleArray == null) {
+    public void remove(IntegerArray array) {
+        if (array == null) {
             return;
         }
-        storage.remove(simpleArray);
+        storage.remove(array);
     }
 
     @Override
-    public List<T> sort(Comparator<T> comparator) {
+    public List<IntegerArray> sort(Comparator<IntegerArray> comparator) {
         if (comparator == null) {
             throw new IllegalArgumentException("Comparator cannot be null");
         }
-        List<T> sorted = new ArrayList<>(storage);
+        List<IntegerArray> sorted = new ArrayList<>(storage);
         sorted.sort(comparator);
         return sorted;
     }
 
     @Override
-    public List<T> query(ArraySpecification<T> specification) {
+    public List<IntegerArray> query(ArraySpecification specification) {
         if (specification == null) {
             return new ArrayList<>(storage);
         }
@@ -49,7 +49,7 @@ public class ArrayRepositoryImpl<T extends SimpleArray<?>> implements ArrayRepos
     }
 
     @Override
-    public List<T> all() {
+    public List<IntegerArray> all() {
         return new ArrayList<>(storage);
     }
 }

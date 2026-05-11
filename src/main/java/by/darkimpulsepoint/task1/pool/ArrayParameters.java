@@ -1,25 +1,25 @@
 package by.darkimpulsepoint.task1.pool;
 
-public class ArrayParameters<T> {
-    private final T min;
-    private final T max;
-    private final T sum;
+public class ArrayParameters {
+    private final Integer min;
+    private final Integer max;
+    private final Integer sum;
 
-    public ArrayParameters(T min, T max, T sum) {
+    public ArrayParameters(Integer min, Integer max, Integer sum) {
         this.min = min;
         this.max = max;
         this.sum = sum;
     }
 
-    public T getMin() {
+    public Integer getMin() {
         return min;
     }
 
-    public T getMax() {
+    public Integer getMax() {
         return max;
     }
 
-    public T getSum() {
+    public Integer getSum() {
         return sum;
     }
 

@@ -1,6 +1,6 @@
 package by.darkimpulsepoint.task1.specification.impl;
 
-import by.darkimpulsepoint.task1.entity.impl.SimpleArrayImpl;
+import by.darkimpulsepoint.task1.entity.IntegerArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,12 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class ArrayAllPositiveSpecificationTest {
 
     private ArrayAllPositiveSpecification specification;
-    private SimpleArrayImpl<Integer> array;
+    private IntegerArray array;
 
     @BeforeEach
     void setUp() {
         specification = new ArrayAllPositiveSpecification();
-        array = new SimpleArrayImpl<>(10);
+        array = new IntegerArray(10);
     }
 
     @Test

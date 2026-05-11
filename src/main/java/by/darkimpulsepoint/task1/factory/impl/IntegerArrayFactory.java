@@ -1,7 +1,6 @@
 package by.darkimpulsepoint.task1.factory.impl;
 
-import by.darkimpulsepoint.task1.entity.SimpleArray;
-import by.darkimpulsepoint.task1.entity.impl.SimpleArrayImpl;
+import by.darkimpulsepoint.task1.entity.IntegerArray;
 import by.darkimpulsepoint.task1.factory.AbstractArrayFactory;
 import by.darkimpulsepoint.task1.parser.impl.IntegerArrayParser;
 import by.darkimpulsepoint.task1.validator.impl.IntegersLineValidator;
@@ -9,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.Optional;
 
-public class IntegerArrayFactory implements AbstractArrayFactory<SimpleArray<Integer>> {
+public class IntegerArrayFactory implements AbstractArrayFactory {
 
     private final IntegersLineValidator validator;
     private final IntegerArrayParser parser;
@@ -21,25 +20,15 @@ public class IntegerArrayFactory implements AbstractArrayFactory<SimpleArray<Int
     }
 
     @Override
-    public Optional<SimpleArray<Integer>> createArray(String line) {
+    public Optional<IntegerArray> createArray(String line) {
         if (line == null || line.isBlank()) {
             return Optional.empty();
         }
 
         if (validator.validate(line)) {
             try {
-                Integer[] parsedValues = parser.parseLine(line);
-
-                SimpleArrayImpl<Integer> array = new SimpleArrayImpl<>(10);
-
-                for (Integer value : parsedValues) {
-                    if (value != null) {
-                        array.add(value);
-                    }
-                }
-
+                IntegerArray array = parser.parseLine(line);
                 return Optional.of(array);
-
             } catch (Exception e) {
                 logger.error("Error while creating array from line: {}", line, e);
                 return Optional.empty();
