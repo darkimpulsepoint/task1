@@ -14,10 +14,6 @@ public class ArraySizeInRangeSpecification implements ArraySpecification {
 
     @Override
     public boolean isSatisfiedBy(IntegerArray array) {
-        if (array == null) {
-            return false;
-        }
-
         int size = array.size();
         return size >= minSize && size <= maxSize;
     }

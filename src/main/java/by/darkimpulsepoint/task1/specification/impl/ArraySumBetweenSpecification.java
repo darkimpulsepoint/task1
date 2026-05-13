@@ -19,11 +19,7 @@ public class ArraySumBetweenSpecification implements ArraySpecification {
 
     @Override
     public boolean isSatisfiedBy(IntegerArray array) {
-        if (array == null) {
-            return false;
-        }
-
-        Optional<Integer> sumOptional = service.findSum(array);
+Optional<Integer> sumOptional = service.findSum(array);
         if (sumOptional.isEmpty()) {
             return false;
         }

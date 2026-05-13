@@ -17,10 +17,6 @@ public class ArrayAverageAboveSpecification implements ArraySpecification {
 
     @Override
     public boolean isSatisfiedBy(IntegerArray array) {
-        if (array == null || mathService == null) {
-            return false;
-        }
-
         Optional<Double> averageOptional = mathService.findAverage(array);
         if (averageOptional.isEmpty()) {
             return false;

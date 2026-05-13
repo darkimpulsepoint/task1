@@ -13,21 +13,13 @@ public class ArrayContainsElementSpecification implements ArraySpecification {
 
     @Override
     public boolean isSatisfiedBy(IntegerArray array) {
-        if (array == null) {
-            return false;
-        }
 
-        try {
-            int[] elements = array.getElements();
-            for (int current : elements) {
-                if (element == current) {
-                    return true;
-                }
+        int[] elements = array.getElements();
+        for (int current : elements) {
+            if (element == current) {
+                return true;
             }
-        } catch (Exception e) {
-            return false;
         }
-
         return false;
     }
 }
