@@ -76,14 +76,15 @@ class IntegerArrayFactoryTest {
 
     @Test
     @DisplayName("Should create array with single element")
-    void testCreateArray_WithSingleElement() throws SimpleArrayException {
+    void testCreateArray_WithSingleElement() {
         String line = "999";
 
         Optional<IntegerArray> resultOptional = factory.createArray(line);
 
         assertTrue(resultOptional.isPresent());
         assertEquals(1, resultOptional.get().size());
-        assertEquals(999, resultOptional.get().get(0));
+        int[] elements = resultOptional.get().getElements();
+        assertEquals(999, elements[0]);
     }
 
     @Test
@@ -98,15 +99,17 @@ class IntegerArrayFactoryTest {
         IntegerArray array = resultOptional.get();
         assertEquals(4, array.size());
 
-        assertEquals(-5, getElementSafely(array, 0));
-        assertEquals(0, getElementSafely(array, 1));
-        assertEquals(-10, getElementSafely(array, 2));
-        assertEquals(7, getElementSafely(array, 3));
+        int[] elements = array.getElements();
+        assertEquals(-5, elements[0]);
+        assertEquals(0, elements[1]);
+        assertEquals(-10, elements[2]);
+        assertEquals(7, elements[3]);
     }
 
     private Integer getElementSafely(IntegerArray array, int index) {
         try {
-            return array.get(index);
+            int[] elements = array.getElements();
+            return elements[index];
         } catch (Exception e) {
             fail("Failed to get element at index " + index);
             return null;

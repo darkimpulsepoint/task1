@@ -2,30 +2,22 @@ package by.darkimpulsepoint.task1.comparator.impl;
 
 import by.darkimpulsepoint.task1.comparator.SimpleArrayComparator;
 import by.darkimpulsepoint.task1.entity.IntegerArray;
-import by.darkimpulsepoint.task1.exception.SimpleArrayException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import by.darkimpulsepoint.task1.pool.ArrayParameters;
+import by.darkimpulsepoint.task1.pool.Warehouse;
+import java.util.Optional;
 
 public class SumComparator implements SimpleArrayComparator {
-    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public int compare(IntegerArray a, IntegerArray b) {
-        int sumA = calculateSum(a);
-        int sumB = calculateSum(b);
-        return Integer.compare(sumA, sumB);
-    }
+        Warehouse warehouse = Warehouse.getInstance();
 
-    private int calculateSum(IntegerArray array) {
-        int sum = 0;
-        for (int i = 0; i < array.size(); i++) {
-            try {
-                sum += array.get(i);
-            } catch (SimpleArrayException e) {
-                logger.error("Error accessing element", e);
-                return 0;
-            }
-        }
-        return sum;
+        Optional<ArrayParameters> paramsA = warehouse.getParameters(a);
+        Optional<ArrayParameters> paramsB = warehouse.getParameters(b);
+
+        int sumA = paramsA.get().getSum();
+        int sumB = paramsB.get().getSum();
+
+        return Integer.compare(sumA, sumB);
     }
 }

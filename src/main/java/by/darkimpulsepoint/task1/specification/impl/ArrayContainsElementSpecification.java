@@ -18,13 +18,13 @@ public class ArrayContainsElementSpecification implements ArraySpecification {
         }
 
         try {
-            for (int i = 0; i < array.size(); i++) {
-                int current = array.get(i);
+            int[] elements = array.getElements();
+            for (int current : elements) {
                 if (element == current) {
                     return true;
                 }
             }
-        } catch (SimpleArrayException e) {
+        } catch (Exception e) {
             return false;
         }
 

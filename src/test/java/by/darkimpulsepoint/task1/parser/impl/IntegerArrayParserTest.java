@@ -26,11 +26,12 @@ class IntegerArrayParserTest {
         IntegerArray result = parser.parseLine(input);
 
         assertEquals(5, result.size());
-        assertEquals(1, result.get(0));
-        assertEquals(2, result.get(1));
-        assertEquals(3, result.get(2));
-        assertEquals(4, result.get(3));
-        assertEquals(5, result.get(4));
+        int[] elements = result.getElements();
+        assertEquals(1, elements[0]);
+        assertEquals(2, elements[1]);
+        assertEquals(3, elements[2]);
+        assertEquals(4, elements[3]);
+        assertEquals(5, elements[4]);
     }
 
     @Test
@@ -41,7 +42,8 @@ class IntegerArrayParserTest {
         IntegerArray result = parser.parseLine(input);
 
         assertEquals(1, result.size());
-        assertEquals(42, result.get(0));
+        int[] elements = result.getElements();
+        assertEquals(42, elements[0]);
     }
 
     @Test
@@ -52,11 +54,12 @@ class IntegerArrayParserTest {
         IntegerArray result = parser.parseLine(input);
 
         assertEquals(5, result.size());
-        assertEquals(-5, result.get(0));
-        assertEquals(-10, result.get(1));
-        assertEquals(0, result.get(2));
-        assertEquals(15, result.get(3));
-        assertEquals(-999, result.get(4));
+        int[] elements = result.getElements();
+        assertEquals(-5, elements[0]);
+        assertEquals(-10, elements[1]);
+        assertEquals(0, elements[2]);
+        assertEquals(15, elements[3]);
+        assertEquals(-999, elements[4]);
     }
 
     @Test
@@ -67,9 +70,10 @@ class IntegerArrayParserTest {
         IntegerArray result = parser.parseLine(input);
 
         assertEquals(3, result.size());
-        assertEquals(10, result.get(0));
-        assertEquals(20, result.get(1));
-        assertEquals(30, result.get(2));
+        int[] elements = result.getElements();
+        assertEquals(10, elements[0]);
+        assertEquals(20, elements[1]);
+        assertEquals(30, elements[2]);
     }
 
     @ParameterizedTest
@@ -99,9 +103,10 @@ class IntegerArrayParserTest {
         IntegerArray result = parser.parseLine(input);
 
         assertEquals(3, result.size());
-        assertEquals(Integer.MAX_VALUE, result.get(0));
-        assertEquals(Integer.MIN_VALUE, result.get(1));
-        assertEquals(0, result.get(2));
+        int[] elements = result.getElements();
+        assertEquals(Integer.MAX_VALUE, elements[0]);
+        assertEquals(Integer.MIN_VALUE, elements[1]);
+        assertEquals(0, elements[2]);
     }
 
     @Test
@@ -112,6 +117,7 @@ class IntegerArrayParserTest {
         IntegerArray result = parser.parseLine(input);
 
         assertEquals(1, result.size());
-        assertEquals(777, result.get(0));
+        int[] elements = result.getElements();
+        assertEquals(777, elements[0]);
     }
 }

@@ -13,13 +13,13 @@ public class ArrayAllPositiveSpecification implements ArraySpecification {
         }
 
         try {
-            for (int i = 0; i < array.size(); i++) {
-                int current = array.get(i);
-                if (current <= 0) {
+            int[] elements = array.getElements();
+            for (int element : elements) {
+                if (element <= 0) {
                     return false;
                 }
             }
-        } catch (SimpleArrayException e) {
+        } catch (Exception e) {
             return false;
         }
 

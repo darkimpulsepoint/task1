@@ -14,81 +14,47 @@ public class ArrayMathServiceImpl implements ArrayMathService {
 
     @Override
     public Optional<Integer> findMaxElement(IntegerArray array) {
-        if (array == null || array.size() == 0) {
-            return Optional.empty();
-        }
-
-        try {
-            int max = array.get(0);
-            for (int i = 1; i < array.size(); i++) {
-                int current = array.get(i);
-                if (current > max) {
-                    max = current;
-                }
+        int[] elements = array.getElements();
+        int max = elements[0];
+        for (int i = 1; i < elements.length; i++) {
+            if (elements[i] > max) {
+                max = elements[i];
             }
-            return Optional.of(max);
-        } catch (SimpleArrayException e){
-            logger.error("Failed to find max element", e);
-            return Optional.empty();
         }
+        return Optional.of(max);
     }
 
     @Override
     public Optional<Integer> findMinElement(IntegerArray array) {
-        if (array == null || array.size() == 0) {
-            return Optional.empty();
-        }
-
-        try {
-            int min = array.get(0);
-            for (int i = 1; i < array.size(); i++) {
-                int current = array.get(i);
-                if (current < min) {
-                    min = current;
-                }
+        int[] elements = array.getElements();
+        int min = elements[0];
+        for (int i = 1; i < elements.length; i++) {
+            if (elements[i] < min) {
+                min = elements[i];
             }
-            return Optional.of(min);
-        } catch (SimpleArrayException e){
-            logger.error("Failed to find min element", e);
-            return Optional.empty();
         }
+        return Optional.of(min);
     }
 
     @Override
     public Optional<Integer> findSum(IntegerArray array) {
-        if (array == null || array.size() == 0) {
-            return Optional.empty();
+        int sum = 0;
+        int[] elements = array.getElements();
+        for (int element : elements) {
+            sum += element;
         }
-
-        try {
-            int sum = 0;
-            for (int i = 0; i < array.size(); i++) {
-                sum += array.get(i);
-            }
-            return Optional.of(sum);
-        } catch (SimpleArrayException e) {
-            logger.error("Failed to find sum", e);
-            return Optional.empty();
-        }
+        return Optional.of(sum);
     }
 
     @Override
     public Optional<Double> findAverage(IntegerArray array) {
-        if (array == null || array.size() == 0) {
-            return Optional.empty();
-        }
 
         double sum = 0;
-        for (int i = 0; i < array.size(); i++) {
-            try {
-                sum += array.get(i);
-            } catch (SimpleArrayException e) {
-                logger.error("Failed to find average", e);
-                return Optional.empty();
-            }
+        int[] elements = array.getElements();
+        for (int element : elements) {
+            sum += element;
         }
-
-        double average = sum / array.size();
+        double average = sum / elements.length;
         return Optional.of(average);
     }
 }

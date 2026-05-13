@@ -5,7 +5,7 @@ import by.darkimpulsepoint.task1.comparator.impl.SumComparator;
 import by.darkimpulsepoint.task1.entity.IntegerArray;
 import by.darkimpulsepoint.task1.exception.SimpleArrayException;
 import by.darkimpulsepoint.task1.factory.impl.IntegerArrayFactory;
-import by.darkimpulsepoint.task1.pool.ArrayParameters;
+import by.darkimpulsepoint.task1.observer.impl.IntegerArrayObserverImpl;
 import by.darkimpulsepoint.task1.pool.Warehouse;
 import by.darkimpulsepoint.task1.service.impl.ArrayMathServiceImpl;
 import by.darkimpulsepoint.task1.validator.impl.IntegersLineValidator;
@@ -58,7 +58,8 @@ public class Main {
             logger.info("Array size: {}", array.size());
 
             try {
-                logger.info("Element at index 2: {}", array.get(2));
+                int[] elements = array.getElements();
+                logger.info("Element at index 2: {}", elements[2]);
 
                 array.set(1, 999);
                 logger.info("After replacing index 1 with 999: {}", array);
@@ -71,17 +72,12 @@ public class Main {
         logger.info("3. Demonstrating comparators");
 
         FirstElementComparator firstElementComparator = new FirstElementComparator();
-        SumComparator sumComparator = new SumComparator();
 
         arrays.sort(firstElementComparator);
         logger.info("Arrays sorted by First Element:");
         arrays.forEach(arr -> logger.info("{}", arr));
 
-        arrays.sort(sumComparator);
-        logger.info("Arrays sorted by Sum:");
-        arrays.forEach(arr -> logger.info("{}", arr));
-
-        logger.info("4. Demonstrating Warehouse");
+        logger.info("4. Demonstrating Warehouse with Observer");
 
         Warehouse warehouse = Warehouse.getInstance();
         ArrayMathServiceImpl mathService = new ArrayMathServiceImpl();
@@ -90,41 +86,58 @@ public class Main {
             IntegerArray array = arrays.get(0);
             array.setId(1L);
 
+            IntegerArrayObserverImpl statisticsObserver = new IntegerArrayObserverImpl(mathService);
+            array.addObserver(statisticsObserver);
+
             logger.info("Initial array: {}", array);
 
-            Optional<Integer> max = mathService.findMaxElement(array);
-            Optional<Integer> min = mathService.findMinElement(array);
-            Optional<Integer> sum = mathService.findSum(array);
+            array.add(100);
+            logger.info("After adding element 100: {}", array);
 
-            if (max.isPresent() && min.isPresent() && sum.isPresent()) {
-                ArrayParameters params = new ArrayParameters(min.get(), max.get(), sum.get());
-                warehouse.put(array, params);
-
-                warehouse.getParameters(array).ifPresent(p ->
-                        logger.info("Parameters in warehouse: {}", p)
-                );
-            }
+            warehouse.getParameters(array).ifPresent(p ->
+                    logger.info("Parameters in warehouse: {}", p)
+            );
 
             try {
                 array.set(0, 7777);
                 logger.info("After modifying array (replaced first element with 7777): {}", array);
 
-                max = mathService.findMaxElement(array);
-                min = mathService.findMinElement(array);
-                sum = mathService.findSum(array);
-
-                if (max.isPresent() && min.isPresent() && sum.isPresent()) {
-                    ArrayParameters params = new ArrayParameters(min.get(), max.get(), sum.get());
-                    warehouse.put(array, params);
-
-                    warehouse.getParameters(array).ifPresent(p ->
-                            logger.info("Updated parameters in warehouse: {}", p)
-                    );
-                }
+                warehouse.getParameters(array).ifPresent(p ->
+                        logger.info("Updated parameters in warehouse: {}", p)
+                );
 
             } catch (SimpleArrayException e) {
                 logger.error("Error while modifying array", e);
             }
+        }
+
+        logger.info("5. Demonstrating SumComparator with Warehouse");
+
+        if (arrays.size() >= 2) {
+            for (int i = 0; i < arrays.size(); i++) {
+                IntegerArray arr = arrays.get(i);
+                arr.setId((long) (i + 1));
+                IntegerArrayObserverImpl observer = new IntegerArrayObserverImpl(mathService);
+                arr.addObserver(observer);
+                arr.add(0);
+            }
+
+            logger.info("Arrays before sorting by sum:");
+            arrays.forEach(arr -> {
+                warehouse.getParameters(arr).ifPresent(p ->
+                        logger.info("Array {}: sum = {}", arr.getId(), p.getSum())
+                );
+            });
+
+            SumComparator sumComparator = new SumComparator();
+            arrays.sort(sumComparator);
+
+            logger.info("Arrays after sorting by sum:");
+            arrays.forEach(arr -> {
+                warehouse.getParameters(arr).ifPresent(p ->
+                        logger.info("Array {}: sum = {}", arr.getId(), p.getSum())
+                );
+            });
         }
 
         logger.info("=== IntegerArray Implementation Demo Finished ===");

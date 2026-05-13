@@ -1,22 +1,24 @@
 package by.darkimpulsepoint.task1.entity;
 
 import by.darkimpulsepoint.task1.exception.SimpleArrayException;
+import by.darkimpulsepoint.task1.observer.IntegerArrayObserver;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class IntegerArray {
     private static final int DEFAULT_CAPACITY = 10;
     private Long id;
     private int[] array;
-    private int size;
+    private List<IntegerArrayObserver> observers = new ArrayList<>();
 
     public IntegerArray() {
-        this(DEFAULT_CAPACITY);
+        this.array = new int[DEFAULT_CAPACITY];
     }
 
     public IntegerArray(int capacity) {
-        this.array = new int[capacity > 0 ? capacity : DEFAULT_CAPACITY];
-        this.size = 0;
+        this.array = new int[capacity];
     }
 
     public Long getId() {
@@ -27,34 +29,47 @@ public class IntegerArray {
         this.id = id;
     }
 
-    public void add(int element) {
-        if (size == array.length) {
-            int newCapacity = array.length * 2;
-            array = Arrays.copyOf(array, newCapacity);
+    public void addObserver(IntegerArrayObserver observer) {
+        if (observer != null && !observers.contains(observer)) {
+            observers.add(observer);
         }
-        array[size++] = element;
     }
 
-    public int get(int index) throws SimpleArrayException {
-        if (index < 0 || index >= size) {
-            throw new SimpleArrayException("Index out of range: " + index);
+    public void removeObserver(IntegerArrayObserver observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers() {
+        for (IntegerArrayObserver observer : observers) {
+            observer.update(this);
         }
-        return array[index];
+    }
+
+    public void add(int element) {
+        int newLength = array.length + 1;
+        array = Arrays.copyOf(array, newLength);
+        array[array.length - 1] = element;
+        notifyObservers();
+    }
+
+    public int[] getElements() {
+        return Arrays.copyOf(array, array.length);
     }
 
     public void set(int index, int element) throws SimpleArrayException {
-        if (index < 0 || index >= size) {
+        if (index < 0 || index >= array.length) {
             throw new SimpleArrayException("Index out of range: " + index);
         }
         array[index] = element;
+        notifyObservers();
     }
 
     public int size() {
-        return size;
+        return array.length;
     }
 
     public int[] toArray() {
-        return Arrays.copyOf(array, size);
+        return Arrays.copyOf(array, array.length);
     }
 
     @Override
@@ -64,9 +79,9 @@ public class IntegerArray {
 
         IntegerArray that = (IntegerArray) obj;
 
-        if (size != that.size) return false;
+        if (array.length != that.array.length) return false;
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < array.length; i++) {
             if (array[i] != that.array[i]) return false;
         }
         return true;
@@ -75,9 +90,9 @@ public class IntegerArray {
     @Override
     public int hashCode() {
         int result = 1;
-        result = 31 * result + size;
+        result = 31 * result + array.length;
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < array.length; i++) {
             result = 31 * result + array[i];
         }
         return result;
@@ -85,13 +100,13 @@ public class IntegerArray {
 
     @Override
     public String toString() {
-        if (size == 0) return "[]";
+        if (array.length == 0) return "[]";
 
         StringBuilder sb = new StringBuilder();
         sb.append("[");
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < array.length; i++) {
             sb.append(array[i]);
-            if (i < size - 1) {
+            if (i < array.length - 1) {
                 sb.append(", ");
             }
         }

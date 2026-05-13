@@ -17,8 +17,9 @@ public class ArraySortServiceImpl implements ArraySortService {
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
                 try {
-                    int a = array.get(j);
-                    int b = array.get(j + 1);
+                    int[] elements = array.getElements();
+                    int a = elements[j];
+                    int b = elements[j + 1];
 
                     if (a > b) {
                         array.set(j, b);
@@ -57,11 +58,12 @@ public class ArraySortServiceImpl implements ArraySortService {
     }
 
     private int partition(IntegerArray array, int low, int high) throws SimpleArrayException {
-        int pivot = array.get(high);
+        int[] elements = array.getElements();
+        int pivot = elements[high];
         int i = low - 1;
 
         for (int j = low; j < high; j++) {
-            int current = array.get(j);
+            int current = elements[j];
             if (current <= pivot) {
                 i++;
                 swap(array, i, j);
@@ -73,8 +75,9 @@ public class ArraySortServiceImpl implements ArraySortService {
     }
 
     private void swap(IntegerArray array, int i, int j) throws SimpleArrayException {
-        int temp = array.get(i);
-        array.set(i, array.get(j));
+        int[] elements = array.getElements();
+        int temp = elements[i];
+        array.set(i, elements[j]);
         array.set(j, temp);
     }
 }

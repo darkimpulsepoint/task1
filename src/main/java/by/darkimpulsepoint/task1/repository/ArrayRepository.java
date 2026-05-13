@@ -11,5 +11,4 @@ public interface ArrayRepository {
     void remove(IntegerArray array);
     List<IntegerArray> sort(Comparator<IntegerArray> comparator);
     List<IntegerArray> query(ArraySpecification specification);
-    List<IntegerArray> all();
 }

@@ -28,11 +28,12 @@ class ArraySortServiceImplTest {
 
         service.bubbleSort(array);
 
-        assertEquals(1, array.get(0));
-        assertEquals(2, array.get(1));
-        assertEquals(4, array.get(2));
-        assertEquals(5, array.get(3));
-        assertEquals(8, array.get(4));
+        int[] elements = array.getElements();
+        assertEquals(1, elements[0]);
+        assertEquals(2, elements[1]);
+        assertEquals(4, elements[2]);
+        assertEquals(5, elements[3]);
+        assertEquals(8, elements[4]);
     }
 
     @Test

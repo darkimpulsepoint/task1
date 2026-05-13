@@ -14,25 +14,16 @@ public class ArrayRepositoryImpl implements ArrayRepository {
 
     @Override
     public void add(IntegerArray array) {
-        if (array == null) {
-            throw new IllegalArgumentException("Cannot add null IntegerArray");
-        }
         storage.add(array);
     }
 
     @Override
     public void remove(IntegerArray array) {
-        if (array == null) {
-            return;
-        }
         storage.remove(array);
     }
 
     @Override
     public List<IntegerArray> sort(Comparator<IntegerArray> comparator) {
-        if (comparator == null) {
-            throw new IllegalArgumentException("Comparator cannot be null");
-        }
         List<IntegerArray> sorted = new ArrayList<>(storage);
         sorted.sort(comparator);
         return sorted;
@@ -40,16 +31,8 @@ public class ArrayRepositoryImpl implements ArrayRepository {
 
     @Override
     public List<IntegerArray> query(ArraySpecification specification) {
-        if (specification == null) {
-            return new ArrayList<>(storage);
-        }
         return storage.stream()
                 .filter(specification::isSatisfiedBy)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<IntegerArray> all() {
-        return new ArrayList<>(storage);
     }
 }

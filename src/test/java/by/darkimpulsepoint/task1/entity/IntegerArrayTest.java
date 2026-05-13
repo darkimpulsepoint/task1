@@ -8,16 +8,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class IntegerArrayTest {
 
     @Test
-    void testAddAndGet() throws SimpleArrayException {
+    void testAddAndGet() {
         IntegerArray array = new IntegerArray();
         array.add(10);
         array.add(20);
         array.add(30);
 
         assertEquals(3, array.size());
-        assertEquals(10, array.get(0));
-        assertEquals(20, array.get(1));
-        assertEquals(30, array.get(2));
+        int[] elements = array.getElements();
+        assertEquals(10, elements[0]);
+        assertEquals(20, elements[1]);
+        assertEquals(30, elements[2]);
     }
 
     @Test
@@ -29,7 +30,8 @@ class IntegerArrayTest {
 
         array.set(1, 25);
 
-        assertEquals(25, array.get(1));
+        int[] elements = array.getElements();
+        assertEquals(25, elements[1]);
     }
 
     @Test
@@ -37,8 +39,13 @@ class IntegerArrayTest {
         IntegerArray array = new IntegerArray();
         array.add(10);
 
-        assertThrows(SimpleArrayException.class, () -> array.get(5));
-        assertThrows(SimpleArrayException.class, () -> array.get(-1));
+        int[] elements = array.getElements();
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            int val = elements[5];
+        });
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            int val = elements[-1];
+        });
     }
 
     @Test
@@ -51,7 +58,7 @@ class IntegerArrayTest {
     }
 
     @Test
-    void testAutoResize() throws SimpleArrayException {
+    void testAutoResize() {
         IntegerArray array = new IntegerArray(2);
         array.add(1);
         array.add(2);
@@ -59,8 +66,9 @@ class IntegerArrayTest {
         array.add(4);
 
         assertEquals(4, array.size());
-        assertEquals(1, array.get(0));
-        assertEquals(4, array.get(3));
+        int[] elements = array.getElements();
+        assertEquals(1, elements[0]);
+        assertEquals(4, elements[3]);
     }
 
     @Test

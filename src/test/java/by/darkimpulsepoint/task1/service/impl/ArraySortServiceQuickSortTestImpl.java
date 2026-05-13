@@ -28,11 +28,12 @@ class ArraySortServiceQuickSortTestImpl {
 
         service.quickSort(array);
 
-        assertEquals(1, array.get(0));
-        assertEquals(2, array.get(1));
-        assertEquals(4, array.get(2));
-        assertEquals(5, array.get(3));
-        assertEquals(8, array.get(4));
+        int[] elements = array.getElements();
+        assertEquals(1, elements[0]);
+        assertEquals(2, elements[1]);
+        assertEquals(4, elements[2]);
+        assertEquals(5, elements[3]);
+        assertEquals(8, elements[4]);
     }
 
     @Test
@@ -45,11 +46,12 @@ class ArraySortServiceQuickSortTestImpl {
 
         service.quickSort(array);
 
-        assertEquals(-20, array.get(0));
-        assertEquals(-5, array.get(1));
-        assertEquals(0, array.get(2));
-        assertEquals(1, array.get(3));
-        assertEquals(10, array.get(4));
+        int[] elements = array.getElements();
+        assertEquals(-20, elements[0]);
+        assertEquals(-5, elements[1]);
+        assertEquals(0, elements[2]);
+        assertEquals(1, elements[3]);
+        assertEquals(10, elements[4]);
     }
 
     @Test
@@ -62,11 +64,12 @@ class ArraySortServiceQuickSortTestImpl {
 
         service.quickSort(array);
 
-        assertEquals(1, array.get(0));
-        assertEquals(2, array.get(1));
-        assertEquals(3, array.get(2));
-        assertEquals(4, array.get(3));
-        assertEquals(5, array.get(4));
+        int[] elements = array.getElements();
+        assertEquals(1, elements[0]);
+        assertEquals(2, elements[1]);
+        assertEquals(3, elements[2]);
+        assertEquals(4, elements[3]);
+        assertEquals(5, elements[4]);
     }
 
     @Test
@@ -79,11 +82,12 @@ class ArraySortServiceQuickSortTestImpl {
 
         service.quickSort(array);
 
-        assertEquals(1, array.get(0));
-        assertEquals(2, array.get(1));
-        assertEquals(3, array.get(2));
-        assertEquals(4, array.get(3));
-        assertEquals(5, array.get(4));
+        int[] elements = array.getElements();
+        assertEquals(1, elements[0]);
+        assertEquals(2, elements[1]);
+        assertEquals(3, elements[2]);
+        assertEquals(4, elements[3]);
+        assertEquals(5, elements[4]);
     }
 
     @Test
@@ -92,7 +96,8 @@ class ArraySortServiceQuickSortTestImpl {
 
         service.quickSort(array);
 
-        assertEquals(42, array.get(0));
+        int[] elements = array.getElements();
+        assertEquals(42, elements[0]);
     }
 
     @Test
